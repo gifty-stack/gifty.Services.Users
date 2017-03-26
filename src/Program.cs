@@ -1,19 +1,19 @@
+using gifty.Services.Users.IoC;
+using gifty.Shared.Builders;
+
 namespace gifty.Services.Users
 {
-    using System.IO;
-    using Microsoft.AspNetCore.Hosting;
-
     public class Program
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseKestrel()
-                .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
+            ServiceBuilder
+                .CreateDefault<Startup>()
+                .WithPort(5001)
+                .WithAutofac(AutofacRegistration.RegisterUsersService)
+                .WithRabbitMq("Users", "guest", "guest", 5672)
+                .Build()
+                .Run();
         }
     }
 }

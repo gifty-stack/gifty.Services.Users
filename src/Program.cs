@@ -1,5 +1,6 @@
-using gifty.Services.Users.IoC;
+using gifty.Services.Users.Bootstrappers;
 using gifty.Shared.Builders;
+using Neo4j.Driver.V1;
 
 namespace gifty.Services.Users
 {
@@ -10,7 +11,7 @@ namespace gifty.Services.Users
             ServiceBuilder
                 .CreateDefault<Startup>()
                 .WithPort(5001)
-                .WithAutofac(AutofacRegistration.RegisterUsersService)
+                .WithAutofac(UsersServiceBootstrapper.BootstraperLifetimeScope)
                 .WithRabbitMq("Users", "guest", "guest", 5672)
                 .Build()
                 .Run();
